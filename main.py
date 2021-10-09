@@ -4,9 +4,9 @@ import requests
 import json
 import time
 
-session = ScratchSession("346383", "iamabot")
+session = ScratchSession("", "") #username and password
 
-studio = 30290420
+studio = 30290420 #studio you want to watch
 r = requests.get('https://api.scratch.mit.edu/studios/{0}/comments/?limit=40&offset=0'.format(studio))
 
 print(r.content)
