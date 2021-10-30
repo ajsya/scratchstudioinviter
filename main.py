@@ -42,4 +42,4 @@ while True:
     else:
         print("Author of latest comment does not want to be invited.")
 
-    time.sleep(5) #Increase distance between requests, for testing purposes set at every 5 seconds.
+    time.sleep(18000) #Increase distance between requests, for testing purposes set at every 5 seconds.
