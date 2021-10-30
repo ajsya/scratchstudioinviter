@@ -19,7 +19,7 @@ while True:
     comment_id1 = obj[0]["id"]
     comment_author = obj[0]["author"]["username"]
     
-    keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME"]
+    keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME", "can I join", "Can I join", "CAN I JOIN", "can I curate", "Can I curate", "CAN I CURATE", "can I be a curator", "Can I be a curator", "CAN I BE A CURATOR"]
 
     wants_invited = any(keywords in comment_content for keywords in keywords)
     
