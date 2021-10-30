@@ -42,4 +42,4 @@ while True:
     else:
         print("Author of latest comment does not want to be invited.")
 
-    time.sleep(18000) #Increase distance between requests, for testing purposes set at every 5 seconds.
+    time.sleep(300) #Increase distance between requests, please limit the number of requests your bot makes per minute to be kind to the scratch servers
