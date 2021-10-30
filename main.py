@@ -4,7 +4,7 @@ import requests
 import time
 import random
 
-login = scratchconnect.ScratchConnect("346383", "drew47569")
+login = scratchconnect.ScratchConnect("","")
 studio = login.connect_studio(studio_id=30290420)
 scratch_studio = 30290420
 
