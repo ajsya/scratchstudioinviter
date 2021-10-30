@@ -3,10 +3,17 @@ import json
 import requests
 import time
 import random
+import os
+from dotenv import load_dotenv
 
-login = scratchconnect.ScratchConnect("","")
-studio = login.connect_studio(studio_id=30290420)
-scratch_studio = 30290420
+load_dotenv()
+
+username = os.environ['USERNAME']
+password = os.environ['PASSWORD']
+scratch_studio = os.environ['STUDIO_ID']
+
+login = scratchconnect.ScratchConnect(username, password)
+studio = login.connect_studio(studio_id=scratch_studio)
 
 last_message = None
 while True:
@@ -19,7 +26,7 @@ while True:
     comment_id1 = obj[0]["id"]
     comment_author = obj[0]["author"]["username"]
     
-    keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME", "can I join", "Can I join", "CAN I JOIN", "can I curate", "Can I curate", "CAN I CURATE", "can I be a curator", "Can I be a curator", "CAN I BE A CURATOR"]
+    keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME", "can I join", "Can I join", "CAN I JOIN", "can I curate", "Can I curate", "CAN I CURATE", "can I be a curator", "Can I be a curator", "CAN I BE A CURATOR", "ADD ME", "add me", "Add me", "Add Me"]
 
     wants_invited = any(keywords in comment_content for keywords in keywords)
     
