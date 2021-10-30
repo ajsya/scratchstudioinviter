@@ -4,6 +4,7 @@ A  self hostable Scratch bot that invites users to a studio.
 ## Requirments
 - Python3
 - requests
+- python-dotenv
 - scratchconnect v.2.1
   - <strong>v.2.1 required</strong>
 - a scratch account
