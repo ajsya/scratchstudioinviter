@@ -2,9 +2,10 @@ import scratchconnect
 import json
 import requests
 import time
+import random
 
-user = scratchconnect.ScratchConnect("", "") #replace with username and password
-studio = user.connect_studio(studio_id=30290420)
+login = scratchconnect.ScratchConnect("346383", "drew47569")
+studio = login.connect_studio(studio_id=30290420)
 scratch_studio = 30290420
 
 last_message = None
@@ -15,6 +16,7 @@ while True:
     #print (json.dumps(obj, indent=2))
 
     comment_content = obj[0]["content"]
+    comment_id1 = obj[0]["id"]
     comment_author = obj[0]["author"]["username"]
     
     keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME"]
@@ -26,6 +28,7 @@ while True:
             print(comment_author, " wants invited.")
             studio.invite_curator(comment_author)
             last_message = comment_content
+            studio.reply_comment(content="Invited! Welcome to {0}, {1}! ({2})".format(studio.title(), comment_author, random.randint(100, 100000)), comment_id=comment_id1)
             print(comment_author, " successfully invited! :)")
         else:
             print("User has been already invited.")
