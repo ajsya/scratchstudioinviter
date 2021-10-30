@@ -3,7 +3,7 @@ import json
 import requests
 import time
 
-user = scratchconnect.ScratchConnect("346383", "iamabot")
+user = scratchconnect.ScratchConnect("", "") #replace with username and password
 studio = user.connect_studio(studio_id=30290420)
 scratch_studio = 30290420
 
