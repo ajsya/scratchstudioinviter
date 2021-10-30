@@ -10,5 +10,4 @@ A  self hostable Scratch bot that invites users to a studio.
 - a scratch account
   - make sure your scratch account is a manager in your studio
 
-Make sure to edit the login variables in the python file.
-I would also recommend changing the time between requests. It's very low for testing.
+Make sure to edit the .env file and add your bot account's username and password, in addition to the id of the studio you want to watch.
