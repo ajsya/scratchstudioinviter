@@ -1,6 +1,8 @@
 # scratch-bot
 A  self hostable Scratch bot that invites users to a studio.
 
+> :warning: **For demonstration purposes only; could very likely lead to your Scratch Account being deleted! Do not misuse.**
+
 ## Requirments
 - Python3
 - requests
