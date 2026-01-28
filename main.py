@@ -1,45 +1,121 @@
-import scratchconnect
-import json
-import requests
-import time
-import random
-import os
+import time, random, os
 from dotenv import load_dotenv
+import scratchattach as sa
 
 load_dotenv()
 
-username = os.environ['USERNAME']
-password = os.environ['PASSWORD']
-scratch_studio = os.environ['STUDIO_ID']
+session = sa.login(os.environ['USERNAME'], os.environ['PASSWORD'])
+studio = session.connect_studio(os.environ['STUDIO_ID'])
 
-login = scratchconnect.ScratchConnect(username, password)
-studio = login.connect_studio(studio_id=scratch_studio)
+keywords = [
+    "invite me", 
+    "Invite Me", 
+    "invite Me", 
+    "Invite me", 
+    "iNvItE mE", 
+    "InViTe Me", 
+    "INVITE ME", 
+    "can I join", 
+    "Can I join", 
+    "CAN I JOIN", 
+    "can I curate", 
+    "Can I curate", 
+    "CAN I CURATE", 
+    "can I be a curator", 
+    "Can I be a curator", 
+    "CAN I BE A CURATOR", 
+    "ADD ME", 
+    "add me", 
+    "Add me", 
+    "Add Me", 
+    "invited", 
+    "invite", 
+    "Invite", 
+    "join", 
+    "JOIN", 
+    "may I join?", 
+    "May I join?", 
+    "MAY I JOIN?", 
+    "please add me", 
+    "Please add me", 
+    "PLEASE ADD ME", 
+    "i would like to join", 
+    "I would like to join", 
+    "I WOULD LIKE TO JOIN",
+    "Can I be curator",
+    "curator",
+    "Curator",
+    "CURATOR",
+    "curate",
+    "Curate",
+    "CURATE"
+]
 
-last_message = None
-while True:
-    r = requests.get('https://api.scratch.mit.edu/studios/{0}/comments/?limit=40&offset=0'.format(scratch_studio))
-    #print(r.content)
-    obj = json.loads(r.text)
-    #print (json.dumps(obj, indent=2))
+responses = [
+    "I sent you an invite.",
+    "You’ve been invited.",
+    "Invite sent.",
+    "Just invited you.",
+    "I added you.",
+    "Sent you an invite.",
+    "I invited you to join.",
+    "You should see an invite from me.",
+    "I sent the invite just now.",
+    "Invite should be there now.",
+    "I added you to it.",
+    "I’ve sent you an invitation.",
+    "You’re invited, feel free to join.",
+    "I went ahead and invited you.",
+    "I added you as a member.",
+    "Just sent you an invite.",
+    "You should have an invite now.",
+    "The invite has been sent.",
+    "I added you so you can check it out.",
+    "I invited you to be part of it.",
+    "You’re invited.",
+    "I sent one your way.",
+    "You should see it in your messages.",
+    "Invite sent, let me know if you don’t see it."
+]
 
-    comment_content = obj[0]["content"]
-    comment_id1 = obj[0]["id"]
-    comment_author = obj[0]["author"]["username"]
-    
-    keywords = ["invite me", "Invite Me", "invite Me", "Invite me", "iNvItE mE", "InViTe Me", "INVITE ME", "can I join", "Can I join", "CAN I JOIN", "can I curate", "Can I curate", "CAN I CURATE", "can I be a curator", "Can I be a curator", "CAN I BE A CURATOR", "ADD ME", "add me", "Add me", "Add Me"]
+starting_offset = 85
+i = 0
+while i < 50:
+    print(i)
 
-    wants_invited = any(keywords in comment_content for keywords in keywords)
-    
-    if wants_invited == True:
-        if comment_content != last_message:
-            print(comment_author, " wants invited.")
-            studio.invite_curator(comment_author)
-            last_message = comment_content
-            studio.reply_comment(content="Invited! Welcome to {0}, {1}! ({2})".format(studio.title(), comment_author, random.randint(100, 100000)), comment_id=comment_id1)
-            print(comment_author, " successfully invited! :)")
+    comments = studio.comments(limit=40, offset=starting_offset + (i * 40))
+    print(comments)
+
+    h = 0
+    for comment in comments:
+        print(i, h)
+        comment_content = comment.content
+        comment_id = comment.id
+        comment_author = comment.author_name
+        data_created = comment.datetime_created
+        print(comment_content, comment_id, comment_author, data_created)
+
+        wants_invited = any(keywords in comment_content for keywords in keywords)
+
+        if wants_invited:
+            print(f"{comment_author} wants invited.")
+            try:
+                studio.invite_curator(comment_author)
+                print(f"{comment_author} successfully invited! :)")
+                try:
+                    reply = random.choice(responses)
+                    studio.reply_comment(
+                        f"{reply} Welcome to {studio.title}, {comment_author}! ({random.randint(100, 100000)})",
+                        parent_id=comment_id
+                    )
+                    print(f"Replied to {comment_author}'s comment.")
+                    time.sleep(31)  # Sleep to avoid hitting rate limits
+                except Exception as e:
+                    print(f"Failed to reply to {comment_author}'s comment: {e}")
+            except Exception as e:
+                print(f"Failed to invite {comment_author}: {e}")
         else:
-            print("User has been already invited.")
-    else:
-        print("Author of latest comment does not want to be invited.")
+            print(f"{comment_author} does not want invited.")
+        h += 1
 
-    time.sleep(300) #Increase distance between requests, please limit the number of requests your bot makes per minute to be kind to the scratch servers
+    i += 1
